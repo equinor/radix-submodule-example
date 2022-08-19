@@ -1,0 +1,18 @@
+name: Update main repo
+on:
+  push:
+    branches: [ "main" ]
+env:
+  MAIN_REPO_URL: "git@github.com:magnus-longva-bouvet/radix-mini-app.git"
+
+jobs:
+  update-main-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run a one-line script
+        run: | 
+          echo ${{ secrets.BASE64_MAIN_REPO_DEPLOY_KEY }} | base64 --decode > /tmp/id_rsa
+          chmod 600 /tmp/id_rsa
+          git -i /tmp/id_rsa clone ${MAIN_REPO_URL} /tmp/main-repo
+          git commit -m "empty" --allow-empty --git-dir=/tmp/main-repo/.git --work-tree /tmp/main-repo
+          git push --git-dir=/tmp/main-repo/.git --work-tree /tmp/main-repo
