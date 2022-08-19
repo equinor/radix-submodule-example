@@ -14,5 +14,6 @@ jobs:
           echo ${{ secrets.BASE64_MAIN_REPO_DEPLOY_KEY }} | base64 --decode > /tmp/id_rsa
           chmod 600 /tmp/id_rsa
           GIT_SSH_COMMAND="ssh -i /tmp/id_rsa" git clone ${MAIN_REPO_URL} /tmp/main-repo
+          git status --git-dir=/tmp/main-repo/.git --work-tree /tmp/main-repo
           git commit -m "empty" --allow-empty --git-dir=/tmp/main-repo/.git --work-tree /tmp/main-repo
           git push --git-dir=/tmp/main-repo/.git --work-tree /tmp/main-repo
