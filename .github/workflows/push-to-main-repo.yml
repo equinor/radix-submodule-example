@@ -15,6 +15,6 @@ jobs:
           chmod 600 /tmp/id_rsa
           GIT_SSH_COMMAND="ssh -i /tmp/id_rsa" git clone ${MAIN_REPO_URL} /tmp/main-repo
           echo "running git status"
-          git status --git-dir=/tmp/main-repo/.git --work-tree /tmp/main-repo
-          git commit -m "empty" --allow-empty --git-dir=/tmp/main-repo/.git --work-tree /tmp/main-repo
-          git push --git-dir=/tmp/main-repo/.git --work-tree /tmp/main-repo
+          git --git-dir=/tmp/main-repo/.git --work-tree /tmp/main-repo status
+          git --git-dir=/tmp/main-repo/.git --work-tree /tmp/main-repo commit -m "empty" --allow-empty
+          git --git-dir=/tmp/main-repo/.git --work-tree /tmp/main-repo push
