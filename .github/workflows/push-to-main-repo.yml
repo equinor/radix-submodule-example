@@ -11,7 +11,7 @@ jobs:
   update-main-repo:
     runs-on: ubuntu-latest
     steps:
-      - name: Run a one-line script
+      - name: Update main repo submodule commit
         run: |
           # pull main repo
           echo ${{ secrets.BASE64_MAIN_REPO_DEPLOY_KEY }} | base64 --decode > /tmp/id_rsa
