@@ -4,20 +4,25 @@ on:
     branches: [ "main" ]
 env:
   MAIN_REPO_URL: "git@github.com:magnus-longva-bouvet/radix-mini-app.git"
+  SUBMODULE_DIR_IN_MAIN_REPO: "submodule-example"
 
 jobs:
   update-main-repo:
     runs-on: ubuntu-latest
     steps:
       - name: Run a one-line script
-        run: | 
+        run: |
+          # pull main repo
           echo ${{ secrets.BASE64_MAIN_REPO_DEPLOY_KEY }} | base64 --decode > /tmp/id_rsa
           chmod 600 /tmp/id_rsa
           export GIT_SSH_COMMAND="ssh -i /tmp/id_rsa"
           git clone ${MAIN_REPO_URL} /tmp/main-repo
-          echo "running git status"
-          git --git-dir=/tmp/main-repo/.git --work-tree /tmp/main-repo status
+          
+          # set git config
           git config --global user.email "github_actions@${GITHUB_ACTION_REPOSITORY}"
           git config --global user.name "GitHub Actions @ ${GITHUB_ACTION_REPOSITORY}"
-          git --git-dir=/tmp/main-repo/.git --work-tree /tmp/main-repo commit -m "empty" --allow-empty
+          
+          # update submodule in main repo          
+          git --git-dir=/tmp/main-repo/${SUBMODULE_DIR_IN_MAIN_REPO}/.git --work-tree /tmp/main-repo/${SUBMODULE_DIR_IN_MAIN_REPO} pull
+          git --git-dir=/tmp/main-repo/.git --work-tree /tmp/main-repo commit -m "updated submodule ${GITHUB_ACTION_REPOSITORY} to commit ${GITHUB_SHA}."
           git --git-dir=/tmp/main-repo/.git --work-tree /tmp/main-repo push
