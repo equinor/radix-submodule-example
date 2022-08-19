@@ -16,7 +16,7 @@ jobs:
           echo ${{ secrets.BASE64_MAIN_REPO_DEPLOY_KEY }} | base64 --decode > /tmp/id_rsa
           chmod 600 /tmp/id_rsa
           export GIT_SSH_COMMAND="ssh -i /tmp/id_rsa"
-          git clone ${MAIN_REPO_URL} /tmp/main-repo
+          git clone --recurse-submodules ${MAIN_REPO_URL} /tmp/main-repo
           
           # set git config
           git config --global user.email "github_actions@${GITHUB_ACTION_REPOSITORY}"
