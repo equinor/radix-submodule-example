@@ -5,6 +5,7 @@ on:
 env:
   MAIN_REPO_URL: "git@github.com:magnus-longva-bouvet/radix-mini-app.git"
   SUBMODULE_DIR_IN_MAIN_REPO: "submodule-example"
+  SUBMODULE_BRANCH: main
 
 jobs:
   update-main-repo:
@@ -23,6 +24,6 @@ jobs:
           git config --global user.name "GitHub Actions @ ${GITHUB_ACTION_REPOSITORY}"
           
           # update submodule in main repo          
-          git --git-dir=/tmp/main-repo/${SUBMODULE_DIR_IN_MAIN_REPO}/.git --work-tree /tmp/main-repo/${SUBMODULE_DIR_IN_MAIN_REPO} pull
+          git --git-dir=/tmp/main-repo/${SUBMODULE_DIR_IN_MAIN_REPO}/.git --work-tree /tmp/main-repo/${SUBMODULE_DIR_IN_MAIN_REPO} pull origin ${SUBMODULE_BRANCH}
           git --git-dir=/tmp/main-repo/.git --work-tree /tmp/main-repo commit -m "updated submodule ${GITHUB_ACTION_REPOSITORY} to commit ${GITHUB_SHA}."
-          git --git-dir=/tmp/main-repo/.git --work-tree /tmp/main-repo push
+          git --git-dir=/tmp/main-repo/.git --work-tree /tmp/main-repo push origin ${SUBMODULE_BRANCH}
