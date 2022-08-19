@@ -13,7 +13,8 @@ jobs:
         run: | 
           echo ${{ secrets.BASE64_MAIN_REPO_DEPLOY_KEY }} | base64 --decode > /tmp/id_rsa
           chmod 600 /tmp/id_rsa
-          GIT_SSH_COMMAND="ssh -i /tmp/id_rsa" git clone ${MAIN_REPO_URL} /tmp/main-repo
+          export GIT_SSH_COMMAND="ssh -i /tmp/id_rsa"
+          git clone ${MAIN_REPO_URL} /tmp/main-repo
           echo "running git status"
           git --git-dir=/tmp/main-repo/.git --work-tree /tmp/main-repo status
           git config --global user.email "github_actions@${GITHUB_ACTION_REPOSITORY}"
