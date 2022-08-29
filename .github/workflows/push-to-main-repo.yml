@@ -5,7 +5,8 @@ on:
 env:
   MAIN_REPO_URL: "git@github.com:magnus-longva-bouvet/radix-mini-app.git"
   SUBMODULE_DIR_IN_MAIN_REPO: "submodule-example"
-  SUBMODULE_BRANCH: main
+  SUBMODULE_MAIN_BRANCH: main
+  MAIN_REPO_MAIN_BRANCH: main
 
 jobs:
   update-main-repo:
@@ -13,17 +14,17 @@ jobs:
     steps:
       - name: Update main repo submodule commit
         run: |
-          # pull main repo
+          # set git config
           echo ${{ secrets.BASE64_MAIN_REPO_DEPLOY_KEY }} | base64 --decode > /tmp/id_rsa
           chmod 600 /tmp/id_rsa
           export GIT_SSH_COMMAND="ssh -i /tmp/id_rsa"
-          git clone --recurse-submodules ${MAIN_REPO_URL} /tmp/main-repo
-          
-          # set git config
           git config --global user.email "github_actions@${GITHUB_ACTION_REPOSITORY}"
           git config --global user.name "GitHub Actions @ ${GITHUB_ACTION_REPOSITORY}"
+
+          # pull main repo
+          git clone --recurse-submodules ${MAIN_REPO_URL} /tmp/main-repo
           
           # update submodule in main repo          
-          git --git-dir=/tmp/main-repo/${SUBMODULE_DIR_IN_MAIN_REPO}/.git --work-tree /tmp/main-repo/${SUBMODULE_DIR_IN_MAIN_REPO} pull origin ${SUBMODULE_BRANCH}
+          git --git-dir=/tmp/main-repo/${SUBMODULE_DIR_IN_MAIN_REPO}/.git --work-tree /tmp/main-repo/${SUBMODULE_DIR_IN_MAIN_REPO} pull origin ${SUBMODULE_MAIN_BRANCH}
           git --git-dir=/tmp/main-repo/.git --work-tree /tmp/main-repo commit -am "updated submodule ${GITHUB_ACTION_REPOSITORY} to commit ${GITHUB_SHA}."
-          git --git-dir=/tmp/main-repo/.git --work-tree /tmp/main-repo push origin ${SUBMODULE_BRANCH}
+          git --git-dir=/tmp/main-repo/.git --work-tree /tmp/main-repo push origin ${MAIN_REPO_MAIN_BRANCH}
