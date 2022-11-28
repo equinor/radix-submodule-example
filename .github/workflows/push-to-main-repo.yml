@@ -3,8 +3,8 @@ on:
   push:
     branches: [ "main" ]
 env:
-  MAIN_REPO_URL: "git@github.com:magnus-longva-bouvet/radix-mini-app.git"
-  SUBMODULE_DIR_IN_MAIN_REPO: "submodule-example"
+  MAIN_REPO_URL: "git@github.com:equinor/radix-app-with-submodule-example.git"
+  SUBMODULE_DIR_IN_MAIN_REPO: "redis"
   SUBMODULE_MAIN_BRANCH: main
   MAIN_REPO_MAIN_BRANCH: main
 
