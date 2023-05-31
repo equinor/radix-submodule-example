@@ -1,4 +1,4 @@
-FROM alpine:3.16
+FROM alpine:3
 RUN apk add redis && mkdir /redis && chown 1000:1000 -R /redis
 RUN echo hei
 USER 1000
